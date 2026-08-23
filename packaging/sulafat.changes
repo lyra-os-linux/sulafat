@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Sun Aug 16 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Sun Aug 16 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.0.4:
   * Add power off, restart, and log out actions to the System menu.
@@ -7,7 +7,7 @@ Sun Aug 16 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
   * Support English, Brazilian Portuguese, and Spanish; remove Chinese.
 
 -------------------------------------------------------------------
-Sat Aug 15 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Sat Aug 15 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.0.3:
   * Validate SSH destinations and structured configuration fields.
@@ -20,25 +20,25 @@ Sat Aug 15 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
   * Surface load, conflict, validation, and persistence errors in the UI.
 
 -------------------------------------------------------------------
-Wed Aug 05 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Wed Aug 05 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.0.2:
   * Remove the "New Window" entry from the application menu.
 
 -------------------------------------------------------------------
-Sun Jul 26 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Sun Jul 26 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Badge the application's dock/taskbar icon with the number of active
   SSH sessions via the com.canonical.Unity.LauncherEntry D-Bus signal.
 
 -------------------------------------------------------------------
-Sun Jul 26 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Sun Jul 26 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Rename the Lyra Linux branding to Lyra OS in the application,
   metadata, documentation, and package description.
 
 -------------------------------------------------------------------
-Sun Jul 26 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Sun Jul 26 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Fix a crash on saving a host or on external ~/.ssh/config changes,
   and fix the session tab not showing after connecting.
@@ -50,26 +50,26 @@ Sun Jul 26 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
   compiled GResource.
 
 -------------------------------------------------------------------
-Fri Jul 24 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Fri Jul 24 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Rename the Lyra Enterprise Linux branding to Lyra Linux in the
   application, metadata, documentation, and package description.
 
 -------------------------------------------------------------------
-Fri Jul 24 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Fri Jul 24 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Move the application menu to the right side of the session header,
   keeping the host panel and connection controls on the left.
 
 -------------------------------------------------------------------
-Fri Jul 24 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Fri Jul 24 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.0.0:
   * Add Settings and About entries to the application menu.
   * Add a native About dialog with project and version information.
 
 -------------------------------------------------------------------
-Thu Jul 23 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Thu Jul 23 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 0.1.1:
   * Redesign the application and symbolic icons with clearer SSH
@@ -77,7 +77,7 @@ Thu Jul 23 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
   * Generate the source and vendored dependencies through OBS services.
 
 -------------------------------------------------------------------
-Thu Jul 23 00:00:00 UTC 2026 - rodrigo@w3ti.com.br
+Thu Jul 23 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Initial package for Sulafat 0.1.0, cliente SSH do ecossistema Lyra
   Enterprise Linux: gerenciador de hosts a partir do ~/.ssh/config
