@@ -15,7 +15,7 @@ Release:        0
 Summary:        SSH client for the Lyra OS ecosystem
 License:        GPL-3.0-or-later
 Group:          Productivity/Networking/SSH
-URL:            https://github.com/britors/Sulafat
+URL:            https://github.com/lyra-os-linux/sulafat
 Source0:        %{name}-%{version}.tar.zst
 Source1:        vendor.tar.zst
 

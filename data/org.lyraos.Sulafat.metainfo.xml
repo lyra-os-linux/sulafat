@@ -62,12 +62,12 @@
       <caption>Host list</caption>
       <caption xml:lang="pt-BR">Lista de hosts</caption>
       <caption xml:lang="es-ES">Lista de hosts</caption>
-      <image>https://raw.githubusercontent.com/britors/Sulafat/main/data/screenshots/hosts.png</image>
+      <image>https://raw.githubusercontent.com/lyra-os-linux/sulafat/main/data/screenshots/hosts.png</image>
     </screenshot>
   </screenshots>
 
-  <url type="homepage">https://github.com/britors/Sulafat</url>
-  <url type="bugtracker">https://github.com/britors/Sulafat/issues</url>
+  <url type="homepage">https://github.com/lyra-os-linux/sulafat</url>
+  <url type="bugtracker">https://github.com/lyra-os-linux/sulafat/issues</url>
 
   <content_rating type="oars-1.1"/>
 

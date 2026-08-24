@@ -644,8 +644,8 @@ pub fn build(app: &adw::Application, initial_host: Option<SshHost>) {
                 .application_icon("org.lyraos.Sulafat")
                 .developer_name("Lyra OS")
                 .version(env!("CARGO_PKG_VERSION"))
-                .website("https://github.com/britors/Sulafat")
-                .issue_url("https://github.com/britors/Sulafat/issues")
+                .website("https://github.com/lyra-os-linux/sulafat")
+                .issue_url("https://github.com/lyra-os-linux/sulafat/issues")
                 .license_type(gtk::License::Gpl30)
                 .build();
             dialog.set_developers(&["Rodrigo Brito"]);
