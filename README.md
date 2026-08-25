@@ -35,6 +35,25 @@ Variável de ambiente `SULAFAT_LOG` controla o nível de log (`tracing-subscribe
 `SULAFAT_LOG=debug ./target/release/sulafat`. O conteúdo das sessões de terminal nunca é
 registrado nos logs.
 
+## Validação
+
+O mesmo contrato executado em cada push para `main` e em cada pull request pode ser reproduzido
+localmente com:
+
+```sh
+cargo test --workspace --locked
+cargo fmt --all --check
+cargo clippy --locked --workspace --all-targets --all-features --offline -- -D warnings
+python3 scripts/check-i18n.py
+rpmspec -P packaging/sulafat.spec >/dev/null
+desktop-file-validate data/org.lyraos.Sulafat.desktop
+appstream-util validate-relax --nonet data/org.lyraos.Sulafat.metainfo.xml
+```
+
+A suíte cobre explicitamente recusa de symlinks, permissões restritas, escrita e substituição
+atômicas, rotação/restauração de backups e conflitos causados por mudanças externas no
+`~/.ssh/config`.
+
 ## Uso
 
 - Gerencie hosts a partir dos blocos `Host` do seu `~/.ssh/config`: busca, grupos e cor por
