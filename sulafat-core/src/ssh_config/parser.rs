@@ -73,7 +73,7 @@ pub(super) fn classify_top(content: &str) -> LineKind {
 /// known directive becomes [`BlockLine::Known`], everything else (comments, blank lines, unknown
 /// directives, and repeated occurrences of an already-seen known directive) becomes
 /// [`BlockLine::Other`] and is preserved verbatim in original order.
-fn classify_body(body: Vec<RawLine>) -> Vec<BlockLine> {
+pub(super) fn classify_body(body: Vec<RawLine>) -> Vec<BlockLine> {
     let mut seen = [false; KnownDirective::ALL.len()];
     body.into_iter()
         .map(|raw| {
