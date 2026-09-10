@@ -52,7 +52,23 @@ appstream-util validate-relax --nonet data/org.lyraos.Sulafat.metainfo.xml
 
 A suíte cobre explicitamente recusa de symlinks, permissões restritas, escrita e substituição
 atômicas, rotação/restauração de backups e conflitos causados por mudanças externas no
-`~/.ssh/config`.
+`~/.ssh/config`. Os testes de precedência exigem o cliente OpenSSH (`openssh-clients`
+ou `openssh-client`, conforme a distribuição): comparam `ssh -G -F` antes e depois de
+salvar fixtures temporárias, sem abrir conexões. Cobrem `Include`, campos repetidos,
+`Match`, comentários, CRLF e ausência de quebra de linha no fim do arquivo.
+
+Ao editar um host existente, campos sem mudanças mantêm seus bytes e posições.
+As opções avançadas preservadas ficam entre os mesmos campos conhecidos; linhas
+alteradas ocupam os espaços antigos, e linhas adicionais ficam antes da próxima
+linha avançada preservada ou depois do último espaço substituído. Ao acrescentar
+opções no fim, elas entram depois da última linha avançada existente (ou no fim do
+bloco se não havia nenhuma). Esse editor não representa a posição de uma opção
+avançada em relação aos campos do formulário: para mover deliberadamente um
+`Include` através de um campo conhecido, edite o arquivo diretamente.
+
+O formulário mostra os campos locais do bloco, não o resultado de resolver `Include`.
+Portanto, alterar um campo posterior a um `Include` não força esse valor a prevalecer
+sobre o arquivo incluído. Uma porta `22` explícita é preservada ao salvar sem mudanças.
 
 ## Uso
 

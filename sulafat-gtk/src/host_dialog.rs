@@ -252,10 +252,7 @@ pub fn edit(
             host.alias = alias_row.text().to_string();
             host.host_name = non_empty(host_name_row.text());
             host.user = non_empty(user_row.text());
-            host.port = {
-                let p = port_row.value() as u16;
-                (p != 22).then_some(p)
-            };
+            host.port = edited_port(base.port, port_row.value() as u16);
             host.proxy_jump = non_empty(proxy_jump_row.text());
             host.identity_file = non_empty(identity_file_row.text());
             let buffer = advanced_view.buffer();
@@ -296,4 +293,27 @@ pub fn edit(
 fn non_empty(text: glib::GString) -> Option<String> {
     let text = text.to_string();
     (!text.is_empty()).then_some(text)
+}
+
+// Preserve an explicit default port on an unchanged form; removing it could expose
+// a later Port/Include. An actual edit to 22 must also remain explicit.
+fn edited_port(original: Option<u16>, selected: u16) -> Option<u16> {
+    if selected == original.unwrap_or(22) {
+        original
+    } else {
+        Some(selected)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::edited_port;
+
+    #[test]
+    fn form_preserves_explicit_and_inherited_ports() {
+        assert_eq!(edited_port(Some(22), 22), Some(22));
+        assert_eq!(edited_port(None, 22), None);
+        assert_eq!(edited_port(Some(2200), 22), Some(22));
+        assert_eq!(edited_port(None, 2200), Some(2200));
+    }
 }

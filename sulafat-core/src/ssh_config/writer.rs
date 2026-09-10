@@ -63,12 +63,18 @@ fn apply_known_field(block: &mut ManagedBlock, directive: KnownDirective, new_va
             }
         }
         (None, Some(v)) => {
-            let insert_at = last_known_index(block).map(|i| i + 1).unwrap_or(0);
+            let insert_at = last_known_index(block)
+                .map(|i| i + 1)
+                .unwrap_or(block.lines.len());
             block.lines.insert(
                 insert_at,
                 BlockLine::Known {
                     directive,
-                    line: build_known_line(directive, v),
+                    line: RawLine(format!(
+                        "    {} {v}{}",
+                        directive.keyword(),
+                        line_ending(block)
+                    )),
                 },
             );
         }
@@ -76,17 +82,174 @@ fn apply_known_field(block: &mut ManagedBlock, directive: KnownDirective, new_va
     }
 }
 
-/// Replace the block's free-form "advanced options" text (everything that isn't one of the known
-/// fields) wholesale, keeping it grouped right after the known-directive lines.
-fn replace_extra_lines(block: &mut ManagedBlock, extra: &str) {
-    block.lines.retain(|l| matches!(l, BlockLine::Known { .. }));
-    if !extra.is_empty() {
-        for line in extra.split('\n') {
-            block
-                .lines
-                .push(BlockLine::Other(RawLine(format!("{line}\n"))));
+fn line_ending(block: &ManagedBlock) -> &'static str {
+    if block.header.0.ends_with("\r\n") {
+        "\r\n"
+    } else {
+        "\n"
+    }
+}
+
+// Longest-common-subsequence anchors, using linear space (Hirschberg), so advanced
+// options can grow without allocating a quadratic table. Equal lines keep their
+// original slots, including repeated directives and their exact raw terminators.
+fn lcs_lengths(a: &[&str], b: &[&str], reverse: bool) -> Vec<usize> {
+    let mut row = vec![0; b.len() + 1];
+    for i in 0..a.len() {
+        let mut diagonal = 0;
+        for j in 0..b.len() {
+            let old = row[j + 1];
+            let (ai, bj) = if reverse {
+                (a.len() - 1 - i, b.len() - 1 - j)
+            } else {
+                (i, j)
+            };
+            row[j + 1] = if a[ai] == b[bj] {
+                diagonal + 1
+            } else {
+                row[j + 1].max(row[j])
+            };
+            diagonal = old;
         }
     }
+    row
+}
+
+fn anchors(a: &[&str], b: &[&str], offset: (usize, usize), out: &mut Vec<(usize, usize)>) {
+    if a.is_empty() || b.is_empty() {
+        return;
+    }
+    if a.len() == 1 {
+        if let Some(j) = b.iter().position(|line| *line == a[0]) {
+            out.push((offset.0, offset.1 + j));
+        }
+        return;
+    }
+    // Trim unchanged ends before the dynamic-programming step. A small edit to
+    // a large advanced-options block should only compare the changed middle.
+    let prefix = a.iter().zip(b).take_while(|(x, y)| x == y).count();
+    let suffix = a[prefix..]
+        .iter()
+        .rev()
+        .zip(b[prefix..].iter().rev())
+        .take_while(|(x, y)| x == y)
+        .count();
+    if prefix + suffix > 0 {
+        out.extend((0..prefix).map(|i| (offset.0 + i, offset.1 + i)));
+        anchors(
+            &a[prefix..a.len() - suffix],
+            &b[prefix..b.len() - suffix],
+            (offset.0 + prefix, offset.1 + prefix),
+            out,
+        );
+        out.extend((0..suffix).map(|i| {
+            (
+                offset.0 + a.len() - suffix + i,
+                offset.1 + b.len() - suffix + i,
+            )
+        }));
+        return;
+    }
+    let mid = a.len() / 2;
+    let split = {
+        let left = lcs_lengths(&a[..mid], b, false);
+        let right = lcs_lengths(&a[mid..], b, true);
+        (0..=b.len())
+            .max_by_key(|&j| left[j] + right[b.len() - j])
+            .unwrap()
+    };
+    anchors(&a[..mid], &b[..split], offset, out);
+    anchors(
+        &a[mid..],
+        &b[split..],
+        (offset.0 + mid, offset.1 + split),
+        out,
+    );
+}
+
+/// Edit advanced text in place around unchanged lines. Replacements reuse old slots;
+/// insertions go before the next unchanged advanced line, or after the last old slot.
+/// The text editor has no markers for known fields: it cannot express moving a line
+/// across one of those fields. Existing lines are never regrouped around them.
+fn replace_extra_lines(block: &mut ManagedBlock, extra: &str) {
+    let old: Vec<(usize, RawLine)> = block
+        .lines
+        .iter()
+        .enumerate()
+        .filter_map(|(i, l)| {
+            if let BlockLine::Other(line) = l {
+                Some((i, line.clone()))
+            } else {
+                None
+            }
+        })
+        .collect();
+    let old_text: Vec<&str> = old
+        .iter()
+        .map(|(_, line)| super::parser::strip_terminator(&line.0))
+        .collect();
+    if old_text.join("\n") == extra {
+        return;
+    }
+    let new: Vec<&str> = if extra.is_empty() {
+        vec![]
+    } else {
+        extra.split('\n').collect()
+    };
+    let mut matches = Vec::new();
+    anchors(&old_text, &new, (0, 0), &mut matches);
+    matches.push((old.len(), new.len()));
+    let mut replacements: Vec<Option<RawLine>> = vec![None; block.lines.len()];
+    let mut insertions: Vec<Vec<RawLine>> = vec![vec![]; block.lines.len() + 1];
+    let mut start = (0, 0);
+    for (end_old, end_new) in matches {
+        let paired = (end_old - start.0).min(end_new - start.1);
+        for k in 0..paired {
+            let (idx, line) = &old[start.0 + k];
+            let content = super::parser::strip_terminator(&line.0);
+            replacements[*idx] = Some(RawLine(format!(
+                "{}{}",
+                new[start.1 + k],
+                &line.0[content.len()..]
+            )));
+        }
+        let boundary = if end_old > start.0 {
+            old[end_old - 1].0 + 1
+        } else if end_old < old.len() {
+            old[end_old].0
+        } else {
+            old.last()
+                .map(|(idx, _)| idx + 1)
+                .unwrap_or(block.lines.len())
+        };
+        for line in &new[start.1 + paired..end_new] {
+            insertions[boundary].push(RawLine(format!("{line}{}", line_ending(block))));
+        }
+        if end_old < old.len() {
+            replacements[old[end_old].0] = Some(old[end_old].1.clone());
+        }
+        start = (end_old + 1, end_new + 1);
+    }
+    let mut result = Vec::new();
+    for (i, line) in block.lines.drain(..).enumerate() {
+        result.extend(insertions[i].drain(..).map(BlockLine::Other));
+        match line {
+            BlockLine::Known { .. } => result.push(line),
+            BlockLine::Other(_) => {
+                if let Some(line) = replacements[i].take() {
+                    result.push(BlockLine::Other(line));
+                }
+            }
+        }
+    }
+    result.extend(
+        insertions
+            .last_mut()
+            .unwrap()
+            .drain(..)
+            .map(BlockLine::Other),
+    );
+    block.lines = result;
 }
 
 fn port_value(host: &SshHost) -> Option<String> {
@@ -98,16 +261,64 @@ fn rewrite_block(block: &mut ManagedBlock, host: &SshHost) {
         set_header_alias(&mut block.header, &host.alias);
         block.alias = host.alias.clone();
     }
-    apply_known_field(block, KnownDirective::HostName, host.host_name.as_deref());
-    apply_known_field(block, KnownDirective::User, host.user.as_deref());
-    apply_known_field(block, KnownDirective::Port, port_value(host).as_deref());
-    apply_known_field(
-        block,
-        KnownDirective::IdentityFile,
-        host.identity_file.as_deref(),
-    );
-    apply_known_field(block, KnownDirective::ProxyJump, host.proxy_jump.as_deref());
+    let previous = super::host_from_managed(block);
+    for (directive, old, new) in [
+        (
+            KnownDirective::HostName,
+            previous.host_name.as_deref(),
+            host.host_name.as_deref(),
+        ),
+        (
+            KnownDirective::User,
+            previous.user.as_deref(),
+            host.user.as_deref(),
+        ),
+        (
+            KnownDirective::Port,
+            port_value(&previous).as_deref(),
+            port_value(host).as_deref(),
+        ),
+        (
+            KnownDirective::IdentityFile,
+            previous.identity_file.as_deref(),
+            host.identity_file.as_deref(),
+        ),
+        (
+            KnownDirective::ProxyJump,
+            previous.proxy_jump.as_deref(),
+            host.proxy_jump.as_deref(),
+        ),
+    ] {
+        if old != new {
+            apply_known_field(block, directive, new);
+        }
+    }
     replace_extra_lines(block, &host.extra);
+    // An insertion after an unterminated final line needs a separator. Otherwise
+    // leave every original terminator untouched, including the last line at EOF.
+    let ending = line_ending(block);
+    if !block.lines.is_empty() && !block.header.0.ends_with('\n') {
+        block.header.0.push_str(ending);
+    }
+    let len = block.lines.len();
+    for line in block.lines.iter_mut().take(len.saturating_sub(1)) {
+        let raw = match line {
+            BlockLine::Known { line, .. } | BlockLine::Other(line) => line,
+        };
+        if !raw.0.ends_with('\n') {
+            raw.0.push_str(ending);
+        }
+    }
+    // Advanced edits may add/remove a first occurrence of a known directive.
+    // Reclassify so a subsequent edit in the same model sees the saved text.
+    block.lines = super::parser::classify_body(
+        std::mem::take(&mut block.lines)
+            .into_iter()
+            .map(|line| match line {
+                BlockLine::Known { line, .. } | BlockLine::Other(line) => line,
+            })
+            .collect(),
+    );
 }
 
 fn build_new_block(host: &SshHost) -> ManagedBlock {

@@ -17,7 +17,7 @@ jobs:
         with:
           components: rustfmt, clippy
       - name: Install GTK, VTE and packaging validators
-        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libadwaita-1-dev libvte-2.91-gtk4-dev gettext appstream-util desktop-file-utils rpm
+        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libadwaita-1-dev libvte-2.91-gtk4-dev gettext appstream-util desktop-file-utils rpm openssh-client
       - name: Test SSH configuration and persistence contracts
         run: cargo test --workspace --locked
       - name: Lint
