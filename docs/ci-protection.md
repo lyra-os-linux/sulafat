@@ -34,8 +34,21 @@ but no required status checks; administrator enforcement was disabled. The
 applicable-rules query returned an empty list. Only required status checks and
 administrator enforcement were changed; the remaining protection was preserved.
 
-Merge-blocking and passing-run evidence is recorded in
-[issue #1](https://github.com/lyra-os-linux/sulafat/issues/1).
+[PR #4](https://github.com/lyra-os-linux/sulafat/pull/4) exercised actual merge
+requests using the administrator account and the exact head revision
+`0c856d109de44c1b40ee3efb6df666ec999752d0`:
+
+| Required check state | Merge response |
+| --- | --- |
+| Running | HTTP 405: `Required status check "contracts" is in progress.` |
+| Intentionally failed | HTTP 405: `Required status check "contracts" is failing.` |
+
+The [controlled run](https://github.com/lyra-os-linux/sulafat/actions/runs/34996210160)
+used a temporary failure step limited to that PR branch. Both refusals left
+`main` at `a799db5beae52ba326bceff5b9fc8121964e8333`. The probe was then removed,
+restoring the workflow byte for byte before running the full CI and integrating
+this documentation. The final passing run and successful squash merge receipt
+are recorded in [issue #1](https://github.com/lyra-os-linux/sulafat/issues/1).
 
 ## Exceptions and recovery
 

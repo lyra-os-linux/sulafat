@@ -21,12 +21,6 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       GSETTINGS_BACKEND: memory
     steps:
-      - name: Controlled failure for branch-protection qualification
-        if: github.event_name == 'pull_request' && github.head_ref == 'test/ci-protection-1'
-        run: |
-          sleep 45
-          echo '::error::Intentional failure to qualify required-check enforcement (issue #1).'
-          exit 1
       - name: Install build tools, GTK, VTE and packaging validators
         run: |
           apt-get update
