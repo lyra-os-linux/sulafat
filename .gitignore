@@ -1,2 +1,4 @@
 /target
 /.run
+/po/locale/
+/sulafat-gtk/gen/

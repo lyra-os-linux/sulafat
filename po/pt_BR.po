@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sulafat 1.0.2\n"
-"PO-Revision-Date: 2026-08-13 00:00-0300\n"
+"Project-Id-Version: Sulafat 1.1.0\n"
+"PO-Revision-Date: 2026-10-25 00:00-0300\n"
 "Last-Translator: Lyra OS Translators\n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -12,124 +12,168 @@ msgstr ""
 
 msgid "About Sulafat"
 msgstr "Sobre o Sulafat"
+
 msgid "Advanced options"
 msgstr "Opções avançadas"
+
 msgid "Alias"
 msgstr "Alias"
+
 msgid "Cancel"
 msgstr "Cancelar"
+
 msgid "Close"
 msgstr "Fechar"
+
 msgid "Close window?"
 msgstr "Fechar janela?"
+
 msgid "Color"
 msgstr "Cor"
-msgid "Confirm"
-msgstr "Confirmar"
+
 msgid "Connect"
 msgstr "Conectar"
+
 msgid "Connection"
 msgstr "Conexão"
+
 msgid "Connection status"
 msgstr "Status da conexão"
+
 msgid "Delete"
 msgstr "Excluir"
+
 msgid "Delete host?"
 msgstr "Excluir host?"
+
 msgid "Delete “{alias}” from ~/.ssh/config? Three backup generations are kept."
 msgstr "Excluir “{alias}” de ~/.ssh/config? Três gerações de backup são mantidas."
+
 msgid "Directives not mapped above, free-form text"
 msgstr "Diretivas não mapeadas acima, texto livre"
+
 msgid "Disconnect"
 msgstr "Desconectar"
+
 msgid "Duplicate"
 msgstr "Duplicar"
+
 msgid "Edit"
 msgstr "Editar"
+
 msgid "Edit connection"
 msgstr "Editar conexão"
+
 msgid "End session?"
 msgstr "Encerrar sessão?"
+
 msgid "Font"
 msgstr "Fonte"
+
 msgid "Group"
 msgstr "Grupo"
+
 msgid "Host actions"
 msgstr "Ações do host"
-msgid "Host color"
-msgstr "Cor do host"
+
 msgid "Hosts"
 msgstr "Hosts"
+
 msgid "Identity file (private key)"
 msgstr "Arquivo de identidade (chave privada)"
+
 msgid "Main menu"
 msgstr "Menu principal"
+
 msgid "New connection"
 msgstr "Nova conexão"
+
 msgid "New group name"
 msgstr "Nome do novo grupo"
+
 msgid "New group…"
 msgstr "Novo grupo…"
+
 msgid "No group"
 msgstr "Sem grupo"
+
 msgid "No open sessions"
 msgstr "Nenhuma sessão aberta"
+
 msgid "None"
 msgstr "Nenhum"
+
 msgid "Notes"
 msgstr "Anotações"
+
 msgid "Open files"
 msgstr "Abrir arquivos"
+
 msgid "Organization"
 msgstr "Organização"
+
 msgid "Port"
 msgstr "Porta"
+
 msgid "Quick connection"
 msgstr "Conexão rápida"
+
 msgid "Quick connection target"
 msgstr "Destino da conexão rápida"
+
 msgid "Reconnect"
 msgstr "Reconectar"
+
 msgid "Save"
 msgstr "Salvar"
+
 msgid "Scrollback (lines)"
 msgstr "Histórico do terminal (linhas)"
+
 msgid "Search hosts"
 msgstr "Buscar hosts"
+
 msgid "Search hosts…"
 msgstr "Buscar hosts…"
+
 msgid "Select a host in the sidebar or use quick connection"
 msgstr "Selecione um host na barra lateral ou use a conexão rápida"
+
 msgid "Select private key"
 msgstr "Selecionar chave privada"
+
 msgid "Session ended"
 msgstr "Sessão encerrada"
+
 msgid "Session ended (code {status})"
 msgstr "Sessão encerrada (código {status})"
-msgid "Sessions"
-msgstr "Sessões"
+
 msgid "Settings"
 msgstr "Configurações"
+
 msgid "Terminal"
 msgstr "Terminal"
+
 msgid "There are active SSH sessions in this window. Do you really want to close it?"
 msgstr "Há sessões SSH ativas nesta janela. Deseja mesmo fechá-la?"
+
 msgid "This tab has an active SSH session. Do you really want to close it?"
 msgstr "Esta aba tem uma sessão SSH ativa. Deseja mesmo fechá-la?"
+
 msgid "User"
 msgstr "Usuário"
+
 msgid "read-only"
 msgstr "somente leitura"
+
 msgid "user@host[:port]"
 msgstr "usuário@host[:porta]"
+
 msgid "Could not save"
 msgstr "Não foi possível salvar"
 
 msgid "Restore latest backup"
 msgstr "Restaurar backup mais recente"
-
-msgid "OK"
-msgstr "OK"
 
 msgid "Could not load SSH configuration"
 msgstr "Não foi possível carregar a configuração SSH"
@@ -157,3 +201,180 @@ msgstr "Encerrar sessão?"
 
 msgid "Your session and all active applications will be closed."
 msgstr "Sua sessão e todos os aplicativos ativos serão encerrados."
+
+msgid "A host named “{alias}” already exists."
+msgstr "Já existe um host chamado “{alias}”."
+
+msgid "Backup restored."
+msgstr "Backup restaurado."
+
+msgid "Choose…"
+msgstr "Escolher…"
+
+msgid "Close tab"
+msgstr "Fechar aba"
+
+msgid "Command copied."
+msgstr "Comando copiado."
+
+msgid "Connect to the selected host"
+msgstr "Conectar ao host selecionado"
+
+msgid "Connected"
+msgstr "Conectado"
+
+msgid "Continue"
+msgstr "Continuar"
+
+msgid "Copy in the terminal"
+msgstr "Copiar no terminal"
+
+msgid "Copy ssh command"
+msgstr "Copiar comando ssh"
+
+msgid "Could not start ssh"
+msgstr "Não foi possível iniciar o ssh"
+
+msgid "Delete the selected host"
+msgstr "Excluir o host selecionado"
+
+msgid "Edit host"
+msgstr "Editar host"
+
+msgid "Edit the selected host"
+msgstr "Editar o host selecionado"
+
+msgid "Font size"
+msgstr "Tamanho da fonte"
+
+msgid "Group, color and notes are kept in Sulafat's own file; ~/.ssh/config stays plain for ssh."
+msgstr "Grupo, cor e notas ficam num arquivo do Sulafat; o ~/.ssh/config continua igual para o ssh."
+
+msgid "Host created in ~/.ssh/config."
+msgstr "Host criado no ~/.ssh/config."
+
+msgid "Host deleted."
+msgstr "Host excluído."
+
+msgid "Host not found."
+msgstr "Host não encontrado."
+
+msgid "Host saved in ~/.ssh/config."
+msgstr "Host salvo no ~/.ssh/config."
+
+msgid "How many lines each tab keeps to scroll back."
+msgstr "Quantas linhas cada aba guarda para rolar para trás."
+
+msgid "Keyboard shortcuts"
+msgstr "Atalhos de teclado"
+
+msgid "Keys and known_hosts are not touched."
+msgstr "Chaves e known_hosts não são alterados."
+
+msgid "Log out"
+msgstr "Encerrar sessão"
+
+msgid "Log out…"
+msgstr "Encerrar sessão…"
+
+msgid "Maximize"
+msgstr "Maximizar"
+
+msgid "Minimize"
+msgstr "Minimizar"
+
+msgid "No color"
+msgstr "Sem cor"
+
+msgid "No host matches “{query}”."
+msgstr "Nenhum host corresponde a “{query}”."
+
+msgid "No hosts in ~/.ssh/config yet."
+msgstr "Ainda não há hosts no ~/.ssh/config."
+
+msgid "Not connected"
+msgstr "Desconectado"
+
+msgid "Opens a session without saving the host. Keys, ssh-agent and ~/.ssh/config apply as in plain ssh."
+msgstr "Abre uma sessão sem salvar o host. Chaves, ssh-agent e ~/.ssh/config valem como no ssh."
+
+msgid "Other color…"
+msgstr "Outra cor…"
+
+msgid "Paste in the terminal"
+msgstr "Colar no terminal"
+
+msgid "Power off"
+msgstr "Desligar"
+
+msgid "Power off…"
+msgstr "Desligar…"
+
+msgid "Previous / next tab"
+msgstr "Aba anterior / próxima"
+
+msgid "Read-only: the file could not be loaded"
+msgstr "Somente leitura: o arquivo não pôde ser lido"
+
+msgid "Restart"
+msgstr "Reiniciar"
+
+msgid "Restart…"
+msgstr "Reiniciar…"
+
+msgid "Restore"
+msgstr "Restaurar"
+
+msgid "Restore latest backup?"
+msgstr "Restaurar o backup mais recente?"
+
+msgid "SSH client for the Lyra OS ecosystem."
+msgstr "Cliente SSH do ecossistema Lyra OS."
+
+msgid "Session ended (signal {signal})"
+msgstr "Sessão encerrada (sinal {signal})"
+
+msgid "Session menu"
+msgstr "Menu da sessão"
+
+msgid "Session not found."
+msgstr "Sessão não encontrada."
+
+msgid "Show session"
+msgstr "Mostrar sessão"
+
+msgid "Sulafat keeps a backup before every save. The current file becomes a backup too."
+msgstr "O Sulafat guarda um backup antes de cada gravação. O arquivo atual também vira um backup."
+
+msgid "System font ({font})"
+msgstr "Fonte do sistema ({font})"
+
+msgid "Template for several hosts"
+msgstr "Modelo para vários hosts"
+
+msgid "The alias cannot be empty."
+msgstr "O alias não pode ficar vazio."
+
+msgid "The name used by ssh and in the sidebar."
+msgstr "O nome usado pelo ssh e na barra lateral."
+
+msgid "The port must be between 1 and 65535."
+msgstr "A porta deve estar entre 1 e 65535."
+
+msgid "This host is a pattern and cannot be connected to."
+msgstr "Este host é um padrão e não aceita conexão."
+
+msgid "To confirm, type {text}:"
+msgstr "Para confirmar, digite {text}:"
+
+msgid "Type {text} to confirm"
+msgstr "Digite {text} para confirmar"
+
+msgid "Unsupported link."
+msgstr "Link não suportado."
+
+msgid "Use user@host or user@host:port."
+msgstr "Use usuário@host ou usuário@host:porta."
+
+msgid "{count} hosts"
+msgstr "{count} hosts"

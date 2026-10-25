@@ -10,7 +10,7 @@
 #
 
 Name:           sulafat
-Version:        1.0.4
+Version:        1.1.0
 Release:        0
 Summary:        SSH client for the Lyra OS ecosystem
 License:        GPL-3.0-or-later
@@ -22,9 +22,12 @@ Source1:        vendor.tar.zst
 BuildRequires:  cargo
 BuildRequires:  cargo-packaging
 BuildRequires:  rust >= 1.85
-BuildRequires:  gtk4-devel >= 4.12
-BuildRequires:  libadwaita-devel >= 1.5
-BuildRequires:  vte-devel >= 0.80
+# Interface em Tauri 2 (WebKitGTK); os arquivos de ui/ (incluindo o xterm.js)
+# são embutidos no binário.
+BuildRequires:  pkgconfig(gtk+-3.0)
+BuildRequires:  pkgconfig(webkit2gtk-4.1)
+BuildRequires:  pkgconfig(javascriptcoregtk-4.1)
+BuildRequires:  pkgconfig(libsoup-3.0)
 BuildRequires:  pkgconfig
 BuildRequires:  python3
 BuildRequires:  desktop-file-utils
@@ -40,14 +43,15 @@ Sulafat é o cliente SSH do ecossistema Lyra OS, para conexão com máquinas
 Linux/Unix (desktops e servidores). É um aplicativo independente, utilizável em qualquer
 distribuição Linux moderna, com integração visual prioritária ao Lyra (GNOME/Wayland).
 
-O protocolo SSH é delegado por completo ao binário `ssh` do OpenSSH, executado dentro de um
-terminal embutido (VTE) — sem implementação própria de SSH. Isso herda de graça chaves,
-ssh-agent, known_hosts, certificados, ProxyJump, multiplexação e todo o ~/.ssh/config existente
-do usuário. O valor do Sulafat está no gerenciamento: hosts organizados com busca, grupos e cor
-por ambiente, sessões em abas.
+O protocolo SSH é delegado por completo ao binário `ssh` do OpenSSH, executado num
+pseudoterminal e exibido num terminal embutido (xterm.js) — sem implementação própria de
+SSH. Isso herda de graça chaves, ssh-agent, known_hosts, certificados, ProxyJump,
+multiplexação e todo o ~/.ssh/config existente do usuário. O valor do Sulafat está no
+gerenciamento: hosts organizados com busca, grupos e cor por ambiente, sessões em abas.
 
-Implementado em Rust, usando GTK4 + libadwaita e VTE. Nenhuma senha ou passphrase é manuseada ou
-armazenada pelo Sulafat — isso é papel do ssh-agent e do GNOME Keyring, já integrados ao sistema.
+Implementado em Rust, com interface em Tauri 2 (WebKitGTK) no padrão dos aplicativos do
+Lyra OS. Nenhuma senha ou passphrase é manuseada ou armazenada pelo Sulafat — isso é papel
+do ssh-agent e do GNOME Keyring, já integrados ao sistema.
 
 %prep
 # -a1 extracts Source0, then unpacks Source1 (vendor.tar.zst) on top of it; the vendor
@@ -81,8 +85,8 @@ appstream-util validate-relax --nonet \
     %{buildroot}%{_datadir}/metainfo/org.lyraos.Sulafat.metainfo.xml
 
 %check
-# Widget construction is covered separately under a virtual display; unit tests need no display
-# or SSH server and include locale selection plus the core parser's round-trip fidelity tests.
+# Unit tests need no display or SSH server: locale selection and catalogs, flow control of the
+# terminal output, host form rules and the core parser's round-trip fidelity tests.
 cargo test --offline --workspace
 python3 scripts/check-i18n.py
 
