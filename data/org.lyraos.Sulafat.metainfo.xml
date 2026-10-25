@@ -17,38 +17,38 @@
     <p>
       Sulafat is the SSH client of the Lyra OS ecosystem, for connecting to
       Linux/Unix desktops and servers. It works on any modern Linux distribution, with
-      GTK4/libadwaita giving it native visual integration with GNOME and Lyra.
+      an interface that follows the GNOME theme and accent color, like the other Lyra apps.
     </p>
     <p xml:lang="pt-BR">
       Sulafat é o cliente SSH do ecossistema Lyra OS, para conexão com
       máquinas Linux/Unix (desktops e servidores). Funciona em qualquer distribuição Linux
-      moderna, com integração visual nativa ao GNOME e ao Lyra via GTK4/libadwaita.
+      moderna, com interface que segue o tema e a cor de destaque do GNOME, como os demais apps do Lyra.
     </p>
     <p xml:lang="es-ES">
       Sulafat es el cliente SSH del ecosistema Lyra OS para conectarse a equipos
       Linux/Unix de escritorio y servidores. Funciona en cualquier distribución Linux moderna,
-      con integración visual nativa con GNOME y Lyra mediante GTK4/libadwaita.
+      con una interfaz que sigue el tema y el color de acento de GNOME, como las demás apps de Lyra.
     </p>
     <p>Features:</p>
     <p xml:lang="pt-BR">Recursos:</p>
     <p xml:lang="es-ES">Funciones:</p>
     <ul>
       <li>Hosts managed straight from your existing ~/.ssh/config, with search, groups and color</li>
-      <li>Sessions in tabs, powered by the real OpenSSH client and an embedded VTE terminal</li>
+      <li>Sessions in tabs, powered by the real OpenSSH client and an embedded terminal</li>
       <li>Keys, ssh-agent, known_hosts, certificates, ProxyJump: all handled by OpenSSH itself</li>
       <li>Quick connect to user@host without saving a profile</li>
       <li>One click to open a host's files over SFTP in the default file manager</li>
     </ul>
     <ul xml:lang="pt-BR">
       <li>Hosts gerenciados diretamente no ~/.ssh/config existente, com busca, grupos e cores</li>
-      <li>Sessões em abas usando o cliente OpenSSH real e um terminal VTE integrado</li>
+      <li>Sessões em abas usando o cliente OpenSSH real e um terminal integrado</li>
       <li>Chaves, ssh-agent, known_hosts, certificados e ProxyJump gerenciados pelo OpenSSH</li>
       <li>Conexão rápida a usuário@host sem salvar um perfil</li>
       <li>Um clique para abrir os arquivos do host por SFTP no gerenciador de arquivos padrão</li>
     </ul>
     <ul xml:lang="es-ES">
       <li>Hosts administrados directamente en el ~/.ssh/config existente, con búsqueda, grupos y colores</li>
-      <li>Sesiones en pestañas con el cliente OpenSSH real y un terminal VTE integrado</li>
+      <li>Sesiones en pestañas con el cliente OpenSSH real y un terminal integrado</li>
       <li>Claves, ssh-agent, known_hosts, certificados y ProxyJump administrados por OpenSSH</li>
       <li>Conexión rápida a usuario@host sin guardar un perfil</li>
       <li>Un clic para abrir los archivos del host por SFTP en el gestor de archivos predeterminado</li>
@@ -72,6 +72,11 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="1.1.0" date="2026-10-25">
+      <description>
+        <p>New interface in the same style as the other Lyra OS apps: hosts grouped in the sidebar, sessions in tabs with a terminal that follows the GNOME monospace font, quick connection, and a host editor with color swatches. OpenSSH still runs every session and keeps handling passwords, keys and fingerprints.</p>
+      </description>
+    </release>
     <release version="1.0.4" date="2026-08-16">
       <description>
         <p>Adds power off, restart, and log out actions to the System menu, with confirmation dialogs and login1 integration. The supported languages are now English, Portuguese, and Spanish.</p>

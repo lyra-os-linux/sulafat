@@ -1,28 +1,18 @@
-mod host_dialog;
-mod host_list;
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+mod desktop;
+mod dev;
+mod hosts;
 mod i18n;
 mod launcher_badge;
 mod prefs;
-mod quick_connect;
-mod terminal_tab;
-mod window_main;
+mod terminal;
 
-use gtk::glib;
-use gtk::prelude::*;
+use tauri::Manager;
 
 const APP_ID: &str = "org.lyraos.Sulafat";
 
-fn register_icon_resources() {
-    gio::resources_register_include!("icons.gresource")
-        .expect("failed to register embedded Sulafat icons");
-    gtk::Window::set_default_icon_name(APP_ID);
-
-    if let Some(display) = gtk::gdk::Display::default() {
-        gtk::IconTheme::for_display(&display).add_resource_path("/org/lyraos/Sulafat/icons");
-    }
-}
-
-fn main() -> glib::ExitCode {
+fn main() {
     i18n::init();
     let filter = tracing_subscriber::EnvFilter::builder()
         .with_env_var("SULAFAT_LOG")
@@ -30,10 +20,54 @@ fn main() -> glib::ExitCode {
         .from_env_lossy();
     tracing_subscriber::fmt().with_env_filter(filter).init();
 
-    let app = adw::Application::builder().application_id(APP_ID).build();
-    app.connect_startup(|_| register_icon_resources());
-    app.connect_activate(|app| {
-        window_main::build(app, None);
-    });
-    app.run()
+    // O prgname mantém o app_id/WM_CLASS que liga a janela ao org.lyraos.Sulafat.desktop.
+    glib::set_prgname(Some(APP_ID));
+    glib::set_application_name("Sulafat");
+
+    tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
+            if let Some(window) = app.get_webview_window("main") {
+                let _ = window.unminimize();
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
+        }))
+        .manage(hosts::Hosts::load())
+        .manage(terminal::Sessions::default())
+        .setup(|app| {
+            desktop::watch_interface(app.handle().clone());
+            hosts::watch_config(app.handle().clone());
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            desktop::app_info,
+            desktop::app_log,
+            desktop::interface_style,
+            desktop::monospace_fonts,
+            desktop::open_uri,
+            desktop::open_files,
+            desktop::pick_identity_file,
+            desktop::clipboard_get,
+            desktop::clipboard_set,
+            desktop::system_action,
+            dev::dev_config,
+            dev::dev_dump,
+            i18n::i18n_catalog,
+            hosts::hosts_list,
+            hosts::host_save,
+            hosts::host_duplicate,
+            hosts::host_delete,
+            hosts::backup_restore,
+            prefs::settings_get,
+            prefs::settings_set,
+            terminal::quick_target,
+            terminal::session_open,
+            terminal::session_spawn,
+            terminal::session_write,
+            terminal::session_resize,
+            terminal::session_ack,
+            terminal::session_close,
+        ])
+        .run(tauri::generate_context!())
+        .expect("failed to start Sulafat");
 }

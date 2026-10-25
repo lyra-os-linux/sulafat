@@ -4,11 +4,12 @@ Cliente SSH do ecossistema **Lyra OS**, o par do Beam: enquanto o Beam conecta a
 mundo Windows via RDP, o Sulafat conecta ao mundo Linux/Unix via SSH. Funciona em qualquer
 distribuição Linux moderna, com integração visual prioritária com o Lyra (GNOME/Wayland).
 
-- Protocolo SSH via o binário `ssh` do OpenSSH, executado dentro de um terminal embutido (VTE) —
+- Protocolo SSH via o binário `ssh` do OpenSSH, executado num pseudoterminal e exibido num terminal embutido (xterm.js) —
   sem implementação própria de SSH. Herda de graça chaves, `ssh-agent`, `known_hosts`,
   certificados, `ProxyJump`, multiplexação e todo o `~/.ssh/config` existente do usuário.
   Nenhuma senha ou passphrase é manuseada ou armazenada pelo Sulafat.
-- Interface em GTK4 + libadwaita.
+- Interface em Tauri 2 (WebKitGTK), no padrão do Vega e dos demais apps do Lyra: segue o tema,
+  a cor de destaque e a fonte monoespaçada do GNOME.
 - `~/.ssh/config` é a fonte da verdade dos hosts — interoperável com o `ssh` puro. Grupo, cor e
   anotações (que não existem no `ssh_config`) ficam num TOML próprio em XDG config.
 
@@ -16,14 +17,15 @@ distribuição Linux moderna, com integração visual prioritária com o Lyra (G
 
 - `sulafat-core`: parser/writer fiel de `~/.ssh/config`, metadados de UI, montagem de comandos e
   monitoramento de mudanças externas — sem dependência de nenhum toolkit gráfico.
-- `sulafat-gtk`: frontend GTK4/libadwaita/VTE (binário `sulafat`).
+- `sulafat-gtk`: frontend Tauri (binário `sulafat`). A interface fica em `sulafat-gtk/ui` e é
+  embutida no binário; o xterm.js está vendorizado em `ui/vendor/xterm` (MIT).
 - `data`: `.desktop`, metadados AppStream e ícones.
 - `packaging`: artefatos para o pacote RPM no OBS (`home:rodrigosbrito:lyra/sulafat`).
 
 ## Compilando
 
-Dependências de sistema (nomes Fedora/openSUSE): `gtk4-devel`, `libadwaita-devel`, o devel do VTE
-para GTK4 (`vte-devel` no openSUSE, variante gtk4 do vte-2.91), um compilador Rust estável recente
+Dependências de sistema (nomes openSUSE): `gtk3-devel`, `webkit2gtk3-soup3-devel`
+(`webkit2gtk-4.1`), `libsoup-devel` (3.x), `gettext-tools` e um compilador Rust estável recente
 (`cargo`, `rustc`).
 
 ```sh
@@ -76,6 +78,9 @@ sobre o arquivo incluído. Uma porta `22` explícita é preservada ao salvar sem
   ambiente.
 - Duplo clique/Enter em um host conecta numa nova aba; conexão rápida `usuário@host` conecta sem
   criar um perfil.
+- No terminal, Ctrl+Shift+C e Ctrl+Shift+V copiam e colam; selecionar com o mouse preenche a
+  seleção primária, que o clique do meio cola. Ctrl+Shift+T abre a conexão rápida e Ctrl+Shift+W
+  fecha a aba; os demais atalhos com Ctrl vão para o `ssh`.
 - Prompts do OpenSSH (senha, confirmação de fingerprint de host novo/alterado) aparecem no próprio
   terminal, como no `ssh` puro.
 - Botão "Abrir arquivos" abre o local `sftp://` correspondente no gerenciador de arquivos padrão.

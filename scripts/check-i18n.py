@@ -10,9 +10,10 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE_FILES = list((ROOT / "sulafat-gtk" / "src").glob("*.rs"))
+SOURCE_FILES = [*(ROOT / "sulafat-gtk" / "src").glob("*.rs"), *(ROOT / "sulafat-gtk" / "ui" / "js").glob("*.js")]
 CATALOGS = [ROOT / "po" / f"{locale}.po" for locale in ("pt_BR", "es_ES")]
-CALL = re.compile(r'\btr(?:_format)?\(\s*"((?:[^"\\]|\\.)*)"')
+# Rust: tr()/tr_format(); interface (ui/js): tr()/trf(), sempre com um literal entre aspas duplas.
+CALL = re.compile(r'\btr(?:_format|f)?\(\s*"((?:[^"\\]|\\.)*)"')
 PLACEHOLDER = re.compile(r"\{[A-Za-z_][A-Za-z0-9_]*\}")
 
 
@@ -58,12 +59,12 @@ def main() -> None:
         actual = {"pt_br": "pt-BR", "es_es": "es-ES", "en_us": "en-US"}.get(base, "en-US")
         assert actual == expected_locale
 
-    # User-facing builder/menu strings must go through tr(); technical identifiers are exempt.
-    suspicious = re.compile(r'\.(?:title|label|tooltip_text|placeholder_text|accessible_label|description)\("')
+    # Interface strings must go through tr()/trf(); a literal in a label attribute is a leftover.
+    suspicious = re.compile(r'(?:placeholder|title|"aria-label"):\s*"[A-Za-z][a-z]+ [a-z]')
     leftovers = []
     for path in SOURCE_FILES:
         for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-            if suspicious.search(line) and not any(exempt in line for exempt in ('title("HostName")', 'title("ProxyJump")', 'title("Sulafat")')):
+            if suspicious.search(line):
                 leftovers.append(f"{path.relative_to(ROOT)}:{number}: {line.strip()}")
     assert not leftovers, "untranslated UI literals:\n" + "\n".join(leftovers)
     print(f"i18n: {len(expected)} UI messages, pt-BR/es-ES catalogs, en-US source fallback")

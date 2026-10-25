@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sulafat</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="vendor/xterm/xterm.css">
+  <link rel="stylesheet" href="css/sulafat.css">
+  <script src="js/boot.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <div class="window sul" id="window">
+    <aside class="sidebar" id="sidebar">
+      <header class="sidebar-header" data-drag>
+        <div class="brand" data-drag><span class="brand-mark" id="brand-mark"></span><span data-drag>Sulafat</span></div>
+        <button class="icon-btn" id="quick-btn"></button>
+        <button class="icon-btn" id="add-btn"></button>
+        <button class="icon-btn" id="menu-btn"></button>
+      </header>
+      <div class="host-search"><div class="input-icon"><span class="ic" id="search-ic"></span><input class="input" id="search" spellcheck="false"></div></div>
+      <div id="load-error"></div>
+      <nav class="host-list" id="hosts"></nav>
+      <footer class="sidebar-footer">
+        <div class="config-chip" id="config-chip"></div>
+      </footer>
+    </aside>
+
+    <main class="content term-area">
+      <header class="headerbar tabs-bar" id="headerbar" data-drag>
+        <button class="icon-btn only-narrow" id="sidebar-toggle"></button>
+        <div class="tabs" id="tabs" role="tablist" data-drag></div>
+        <div class="header-actions" id="header-actions"></div>
+        <div class="window-controls" id="window-controls"></div>
+      </header>
+      <div class="term-stage" id="stage"></div>
+    </main>
+  </div>
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+</body>
+</html>

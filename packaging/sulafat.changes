@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Sun Oct 25 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
+
+- Update to Sulafat 1.1.0:
+  * Replace the GTK4/libadwaita/VTE interface with Tauri 2, in the same
+    style as Vega and the other Lyra OS apps.
+  * Run ssh in a pseudoterminal shown by an embedded xterm.js terminal,
+    with flow control, Ctrl+Shift+C/V, primary selection and clickable links.
+  * Follow the GNOME color scheme, accent color and monospace font.
+  * Build against WebKitGTK 4.1 and GTK 3 instead of GTK 4, libadwaita and VTE.
+
+-------------------------------------------------------------------
 Sun Aug 16 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.0.4:
