@@ -93,8 +93,9 @@ pub fn monospace_fonts() -> Vec<String> {
 }
 
 fn launch(uri: &str) -> Result<(), String> {
-    gio::AppInfo::launch_default_for_uri(uri, None::<&gio::AppLaunchContext>)
-        .map_err(|error| error.to_string())
+    let context = gio::AppLaunchContext::new();
+    crate::webkit_env::clean_launch_context(&context);
+    gio::AppInfo::launch_default_for_uri(uri, Some(&context)).map_err(|error| error.to_string())
 }
 
 /// Links clicados no terminal: só os esquemas que o VTE também abria.
