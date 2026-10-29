@@ -158,6 +158,7 @@ impl Sessions {
         }
         command.env("TERM", "xterm-256color");
         command.env("COLORTERM", "truecolor");
+        crate::webkit_env::clean_pty_command(&mut command);
         let mut child = pair.slave.spawn_command(command).map_err(|e| failed(&e))?;
         drop(pair.slave);
         let mut reader = pair.master.try_clone_reader().map_err(|e| failed(&e))?;

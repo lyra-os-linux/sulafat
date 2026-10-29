@@ -7,12 +7,14 @@ mod i18n;
 mod launcher_badge;
 mod prefs;
 mod terminal;
+mod webkit_env;
 
 use tauri::Manager;
 
 const APP_ID: &str = "org.lyraos.Sulafat";
 
 fn main() {
+    webkit_env::apply();
     i18n::init();
     let filter = tracing_subscriber::EnvFilter::builder()
         .with_env_var("SULAFAT_LOG")

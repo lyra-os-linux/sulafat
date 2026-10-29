@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 29 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
+
+- Update to Sulafat 1.1.1:
+  * Disable the WebKit DMA-BUF renderer at startup, so WebKitWebProcess no
+    longer aborts with heap corruption on exit (sulafat#6, vega#166). ssh
+    and apps opened from terminal links do not inherit the variable.
+
+-------------------------------------------------------------------
 Sun Oct 25 00:00:00 UTC 2026 - rodrigo@lyraos.com.br
 
 - Update to Sulafat 1.1.0:
