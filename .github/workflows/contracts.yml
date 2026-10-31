@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   contracts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Tauri 2 needs WebKitGTK 4.1 and libsoup 3 headers.
     container: debian:trixie
     defaults:
