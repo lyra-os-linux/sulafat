@@ -72,6 +72,11 @@
   <content_rating type="oars-1.1"/>
 
   <releases>
+    <release version="1.1.2" date="2026-11-10">
+      <description>
+        <p>Development test hooks no longer run in release builds.</p>
+      </description>
+    </release>
     <release version="1.1.1" date="2026-10-29">
       <description>
         <p>Stop the web content process from crashing when Sulafat closes.</p>
